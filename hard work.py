@@ -67,3 +67,54 @@ def r2_score(Y,Y_):
     score=(1-num/denom)
     return score*100
 r2_score(y,y_)
+# Visualise loss function
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+import numpy as np
+print(theta)
+T0=np.arange(-40,40,1)
+T1=np.arange(40,120,1)
+print(T0,T1)
+T0,T1=np.meshgrid(T0,T1)
+J=np.zeros(T0.shape)
+for i in range(J.shape[0]):
+    for j in range(J.shape[1]):
+        y_=T1[i,j]*X+T0[i,j]
+        J[i,j]=np.sum((y-y_)**2)/y.shape[0]
+print(J)
+print(J.shape)
+fig=plt.figure()
+axes=fig.gca(projection='3d')
+axes.contour(T0,T1,J,cmap='rainbow')
+fig=plt.figure()
+axes=fig.gca(projection='3d')
+axes.plot_surface(T0,T1,J,cmap='rainbow')
+theta_list=np.array(theta_list)
+theta_list
+plt.plot(theta_list[:,0],label="Theta0")
+plt.plot(theta_list[:,1],label="Theta1")
+plt.legend()
+plt.show()
+fig=plt.figure()
+axes=fig.gca(projection='3d')
+axes.contour(T0,T1,J,cmap='rainbow')
+axes.scatter(theta_list[:,0],theta_list[:,1],error_list)
+plt.show()
+#2D contour
+plt.contour(T0,T1,J,cmap='rainbow')
+plt.scatter(theta_list[:,0],theta_list[:,1])
+plt.show()
+theta_list
+np.save("ThetaList.npy",theta_list)
+#Interactive Graph
+theta=np.load("ThetaList.npy")
+T0=theta[:,0]
+T1=theta[:,1]
+plt.ion()
+for i in range(0,50,3):
+    y_=T1[i]*X+T0[i]
+    plt.scatter(X,y)
+    plt.plot(X,y_,'red')
+    plt.draw()
+    plt.pause(1)
+    plt.clf()
